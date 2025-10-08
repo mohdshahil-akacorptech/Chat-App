@@ -14,6 +14,18 @@
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages > li { padding: 0.5rem 1rem; }
       #messages > li:nth-child(odd) { background: #efefef; }
+
+      .user-message {
+        text-align: left;
+        background-color: #d1e7dd;
+      }
+
+      .system-message {
+        text-align: center;
+        font-style: italic;
+        color: #888;
+      }
+
     </style>
   </head>
   <body>
@@ -36,14 +48,21 @@
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         if (input.value) {
-          socket.emit('chat message', input.value);
+          socket.emit('chat message', { text: input.value , type: "user" });
           input.value = '';
         }
       })
 
       socket.on('chat message', (msg) => {
         const item = document.createElement('li');
-        item.textContent = msg;
+        item.textContent = msg.text;
+
+        if (msg.type === 'user') {
+          item.classList.add('user-message');
+        } else if (msg.type === 'system') {
+          item.classList.add('system-message');
+        }
+
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight); 
       });

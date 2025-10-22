@@ -13,7 +13,8 @@ const io = new Server(server, {
     connectionStateRecovery: true,
 });
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 app.get('/', (req, res) => {
   res.sendFile(join(__dirname, "index.html"));
